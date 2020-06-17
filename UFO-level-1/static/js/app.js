@@ -2,6 +2,21 @@
 let tableData = data;
 let filteredData = tableData;
 
+let dateList = tableData.map(sighting => sighting.datetime);
+let uniqueDates = [...new Set(dateList)];
+
+let citiesList = tableData.map(sighting => sighting.city);
+let uniqueCities = [...new Set(citiesList)];
+
+let statesList = tableData.map(sighting => sighting.state);
+let uniqueStates = [...new Set(statesList)];
+
+let countriesList = tableData.map(sighting => sighting.country);
+let uniqueCountries = [...new Set(countriesList)];
+
+let shapeList = tableData.map(sighting => sighting.shape);
+let uniqueShapes = [...new Set(shapeList)];
+
 // Get a reference to the table body
 let tbody = d3.select("tbody");
 
@@ -44,16 +59,26 @@ function runEnter() {
     console.log(inputValueCountry);
     console.log(inputValueShape);
 
-    // Successively filter the data based on the inputs
-    filteredData = tableData.filter(ufoSighting => ufoSighting.datetime === inputValueDate);
-    filteredData = filteredData.filter(ufoSighting => ufoSighting.city.toUpperCase() === inputValueCity.toUpperCase());
-    filteredData = filteredData.filter(ufoSighting => ufoSighting.state.toUpperCase() === inputValueState.toUpperCase());
-    filteredData = filteredData.filter(ufoSighting => ufoSighting.country.toUpperCase() === inputValueCountry.toUpperCase());
-    filteredData = filteredData.filter(ufoSighting => ufoSighting.shape.toUpperCase() === inputValueShape.toUpperCase());
+    filteredData = tableData
+        // Successively filter the data based on the inputs
+    if (inputValueDate) {
+        filteredData = filteredData.filter(ufoSighting => ufoSighting.datetime === inputValueDate);
+    };
+    if (inputValueCity) {
+        filteredData = filteredData.filter(ufoSighting => ufoSighting.city.toUpperCase() === inputValueCity.toUpperCase());
+    };
+    if (inputValueState) {
+        filteredData = filteredData.filter(ufoSighting => ufoSighting.state.toUpperCase() === inputValueState.toUpperCase());
+    };
+    if (inputValueCountry) {
+        filteredData = filteredData.filter(ufoSighting => ufoSighting.country.toUpperCase() === inputValueCountry.toUpperCase());
+    };
+    if (inputValueShape) {
+        filteredData = filteredData.filter(ufoSighting => ufoSighting.shape.toUpperCase() === inputValueShape.toUpperCase());
+    };
 
     // Append rows that meet filter criteria to the table
     filteredData.forEach((UFO) => {
-
         let row = tbody.append("tr");
         Object.entries(UFO).forEach(([key, value]) => {
             let cell = row.append("td");
