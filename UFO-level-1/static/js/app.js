@@ -1,9 +1,10 @@
 // from data.js
 let tableData = data;
-let filteredData = tableData;
+// let filteredData = tableData;
 
-let dateList = tableData.map(sighting => sighting.datetime);
+let dateList = tableData.map(sighting => new Date(sighting.datetime));
 let uniqueDates = [...new Set(dateList)];
+console.log(uniqueDates);
 
 let citiesList = tableData.map(sighting => sighting.city);
 let uniqueCities = [...new Set(citiesList)];
@@ -27,8 +28,16 @@ let form = d3.select("form");
 
 // Create event handlers 
 button1.on("click", runEnter);
-button2.on("click", resetTable);
 form.on("submit", runEnter);
+
+d3.selectAll("td").remove();
+tableData.forEach((UFO) => {
+    let row = tbody.append("tr");
+    Object.entries(UFO).forEach(([key, value]) => {
+        let cell = row.append("td");
+        cell.text(value);
+    });
+});
 
 // Complete the event handler function for the form
 function runEnter() {
@@ -53,14 +62,14 @@ function runEnter() {
     let inputValueCountry = inputElementCountry.property("value");
     let inputValueShape = inputElementShape.property("value");
 
-    console.log(inputValueDate);
-    console.log(inputValueCity);
-    console.log(inputValueState);
-    console.log(inputValueCountry);
-    console.log(inputValueShape);
+    // console.log(inputValueDate);
+    // console.log(inputValueCity);
+    // console.log(inputValueState);
+    // console.log(inputValueCountry);
+    // console.log(inputValueShape);
 
-    filteredData = tableData
-        // Successively filter the data based on the inputs
+    let filteredData = tableData
+        // Successively filter the data based on the inputs. If input is null include all results for that input.
     if (inputValueDate) {
         filteredData = filteredData.filter(ufoSighting => ufoSighting.datetime === inputValueDate);
     };
@@ -78,6 +87,7 @@ function runEnter() {
     };
 
     // Append rows that meet filter criteria to the table
+    d3.selectAll("td").remove();
     filteredData.forEach((UFO) => {
         let row = tbody.append("tr");
         Object.entries(UFO).forEach(([key, value]) => {
@@ -86,19 +96,3 @@ function runEnter() {
         });
     });
 };
-
-function resetTable() {
-    d3.selectAll("td").remove();
-    tableData.forEach((UFO) => {
-        let row = tbody.append("tr");
-        Object.entries(UFO).forEach(([key, value]) => {
-            let cell = row.append("td");
-            cell.text(value);
-        });
-    });
-};
-
-
-// var string = input.value;
-// x.innerHTML = string[0].toUpperCase() +
-//     string.slice(1);
