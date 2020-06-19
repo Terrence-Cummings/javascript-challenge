@@ -131,13 +131,12 @@
                                             </li>
                                             <li class="filter list-group-item">
                                                 <label for="date">Start Date</label>
-                                                <input class="form-control" id="startdate" type="date" value="2010-01-01" min="2010-01-01" max="2010-01-13" onchange="chgEndMin(this.value)">
-                                                <!-- <input class="form-control" id="datetime" type="text" placeholder="mm/dd/yyyy"> -->
+                                                <!-- Use datepicker input type. Set onchange to change the min End Date in the next datepicker input so can't be before the Start Date -->
+                                                <input class="form-control" id="startdate" type="date" value=${firstDate} min="2010-01-01" max="2010-01-13" onchange="chgEndMin(this.value)">
                                             </li>
                                             <li class="filter list-group-item">
                                                 <label for="date">End Date</label>
-                                                <input class="form-control" id="enddate" type="date" value="2010-01-13" min="2010-01-01" max="2010-01-13">
-                                                <!-- <input class="form-control" id="datetime" type="text" placeholder="mm/dd/yyyy"> -->
+                                                <input class="form-control" id="enddate" type="date" value="End Date" min="2010-01-01" max="2010-01-13">
                                             </li>
                                         </ul>
                                     </div>
