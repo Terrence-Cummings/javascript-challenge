@@ -1,34 +1,48 @@
-// from data.js
 let tableData = data;
-// let filteredData = tableData;
 
-let dateList = tableData.map(sighting => new Date(sighting.datetime));
-let uniqueDates = [...new Set(dateList)];
-console.log(uniqueDates);
+let dateList = tableData.map(sighting => sighting.datetime);
 
-let citiesList = tableData.map(sighting => sighting.city);
-let uniqueCities = [...new Set(citiesList)];
+let newDateList = [];
+dateList.forEach(function(dataDate) {
+    splitDay = dataDate.split('/');
+    if (splitDay[0].length < 2) {
+        splitDay[0] = "0" + splitDay[0];
+    };
+    if (splitDay[1].length < 2) {
+        splitDay[1] = "0" + splitDay[1];
+    };
+    dataDate = splitDay[2] + "-" + splitDay[0] + "-" + splitDay[1];
+    newDateList.push(dataDate);
+});
 
-let statesList = tableData.map(sighting => sighting.state);
-let uniqueStates = [...new Set(statesList)];
+firstDate = newDateList[0];
+lastDate = newDateList[newDateList.length - 1];
 
-let countriesList = tableData.map(sighting => sighting.country);
-let uniqueCountries = [...new Set(countriesList)];
+d3.select('#startdate').attr("min", firstDate);
+d3.select('#startdate').attr("max", lastDate);
+d3.select('#enddate').attr("max", lastDate);
 
-let shapeList = tableData.map(sighting => sighting.shape);
-let uniqueShapes = [...new Set(shapeList)];
+
+for (i = 0; i < tableData.length; i++) {
+    tableData[i].datetime = newDateList[i];
+};
 
 // Get a reference to the table body
 let tbody = d3.select("tbody");
 
 // Select the buttons and form
 let button1 = d3.select("#filter-btn");
-let button2 = d3.select("#clear-filter-btn");
 let form = d3.select("form");
+let chgStart = d3.select('#startdate');
 
 // Create event handlers 
 button1.on("click", runEnter);
 form.on("submit", runEnter);
+
+chgStart.onchange = function() {
+    console.log("Start Date Changed!");
+};
+
 
 d3.selectAll("td").remove();
 tableData.forEach((UFO) => {
@@ -38,6 +52,10 @@ tableData.forEach((UFO) => {
         cell.text(value);
     });
 });
+
+function chgEndMin(valEnd) {
+    d3.select('#enddate').attr("min", valEnd);
+};
 
 // Complete the event handler function for the form
 function runEnter() {
@@ -49,29 +67,30 @@ function runEnter() {
     d3.selectAll("td").remove();
 
     // Select the input element and get the raw HTML node
-    let inputElementDate = d3.select("#datetime");
+    let inputElementStartDate = d3.select("#startdate");
+    let inputElementEndDate = d3.select("#enddate");
     let inputElementCity = d3.select("#city");
     let inputElementState = d3.select("#state");
     let inputElementCountry = d3.select("#country");
     let inputElementShape = d3.select("#shape");
 
     // Get the value property of the input element
-    let inputValueDate = inputElementDate.property("value");
+    let inputValueStartDate = inputElementStartDate.property("value");
+    // d3.select('#enddate').attr("min", inputValueStartDate);
+    let inputValueEndDate = inputElementEndDate.property("value");
     let inputValueCity = inputElementCity.property("value");
     let inputValueState = inputElementState.property("value");
     let inputValueCountry = inputElementCountry.property("value");
     let inputValueShape = inputElementShape.property("value");
 
-    // console.log(inputValueDate);
-    // console.log(inputValueCity);
-    // console.log(inputValueState);
-    // console.log(inputValueCountry);
-    // console.log(inputValueShape);
-
     let filteredData = tableData
-        // Successively filter the data based on the inputs. If input is null include all results for that input.
-    if (inputValueDate) {
-        filteredData = filteredData.filter(ufoSighting => ufoSighting.datetime === inputValueDate);
+
+    // Successively filter the data based on the inputs. If input is null include all results for that input.
+    if (inputValueStartDate) {
+        filteredData = filteredData.filter(ufoSighting => ufoSighting.datetime >= inputValueStartDate);
+    };
+    if (inputValueEndDate) {
+        filteredData = filteredData.filter(ufoSighting => ufoSighting.datetime <= inputValueEndDate);
     };
     if (inputValueCity) {
         filteredData = filteredData.filter(ufoSighting => ufoSighting.city.toUpperCase() === inputValueCity.toUpperCase());
