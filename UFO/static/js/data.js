@@ -229,7 +229,7 @@ var data = [{
         state: "fl",
         country: "us",
         shape: "unknown",
-        durationMinutes: 15,
+        durationMinutes: "15 minutes",
         comments: "Six flickering orange lights over baker"
     },
     {
@@ -688,7 +688,7 @@ var data = [{
         state: "ca",
         country: "us",
         shape: "triangle",
-        durationMinutes: 20,
+        durationMinutes: "20 minutes",
         comments: "((HOAX??))  1/9/19 DURATION 20:00 FREEDOM CA  IT WAS A TRIANGLE BUT FIRST IT WAS ONE LIGHT"
     },
     {

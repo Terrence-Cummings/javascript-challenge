@@ -1,7 +1,7 @@
 // TERRENCE CUMMINGS
 // Javascript Challenge
 
-// Set variable equal to the data object in data.js
+// Set variable equal to the data array of objects in data.js
 let tableData = data;
 
 // Grab the dates from the data to change the date format
@@ -25,7 +25,8 @@ dateList.forEach(function(dataDate) {
 firstDate = newDateList[0];
 lastDate = newDateList[newDateList.length - 1];
 
-// Set datepicker input options to be constrained by latest and earliest dates in the data. Set the starting input dates equal to the earliest and latest dates in the data
+// Set datepicker input options to be constrained by latest and earliest dates in the data. Set the starting input 
+// dates equal to the earliest and latest dates in the data
 d3.select('#startdate').attr("min", firstDate);
 d3.select('#startdate').attr("max", lastDate);
 d3.select('#enddate').attr("max", lastDate);
@@ -55,7 +56,7 @@ tableData.forEach((UFO) => {
     let row = tbody.append("tr");
     Object.entries(UFO).forEach(([key, value]) => {
         let cell = row.append("td");
-        cell.text(value);
+        cell.text(value.toUpperCase());
     });
 });
 
@@ -124,7 +125,7 @@ function runEnter() {
         let row = tbody.append("tr");
         Object.entries(UFO).forEach(([key, value]) => {
             let cell = row.append("td");
-            cell.text(value);
+            cell.text(value.toUpperCase());
         });
     });
 };
